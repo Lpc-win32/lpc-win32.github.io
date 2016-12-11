@@ -5,8 +5,8 @@ header-img: img/home-bg.jpg
 email: 312041933@qq.com
 description: ""
 keyword: ""
-url: "https://lpc-win32.github.io"              # your host, for absolute URL
-baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
+#url: "https://lpc-win32.github.io"              # your host, for absolute URL
+#baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 
