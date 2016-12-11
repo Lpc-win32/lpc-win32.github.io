@@ -5,8 +5,8 @@ header-img: img/home-bg.jpg
 email: 312041933@qq.com
 description: ""
 keyword: ""
-url: "http://lpc-win32.me"              # your host, for absolute URL
-baseurl: "/lpc-win32"         # for example, '/blog' if your blog hosted on 'host/blog'
+url: "https://lpc-win32.github.io"              # your host, for absolute URL
+baseurl: "/"         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 
@@ -66,7 +66,7 @@ duoshuo_share: false                     # set to false if you want to use Comme
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "学习、分享与沉淀"
-sidebar-avatar: /lpc-win32/img/avatar-lpc.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/avatar-lpc.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
