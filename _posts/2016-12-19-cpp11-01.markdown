@@ -26,4 +26,4 @@ tags:
 ### 1.3 C++特性一览
 > 此处内容暂不描述，将在后面的文章中依次向大家列举
 
-![image](../img/2016-12-19/c++11.png)
+![image](https://lpc-win32.github.io/img/2016-12-19/c++11.png)
