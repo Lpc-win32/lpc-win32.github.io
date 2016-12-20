@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 深入理解C++11（笔记）：第二章 保证稳定性与兼容性
-subtitle: ' "First step."'
+subtitle: ' "稳定性与兼容性."'
 date: '2016-12-19 13:39'
 header-img: img/post-bg-2015.jpg
 tags:
@@ -47,4 +47,6 @@ __ STDC_VERSION __ | C编译器通常用这个宏来表示所支持的C标准的
 	// 但是这样的形式是无法通过编译的
 	void FuncFail(string func_name = __func__) {}
 	// 这是由于在参数声明时，__func__还未被定义
-```
+```  
+
+
