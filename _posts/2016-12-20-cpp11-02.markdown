@@ -27,27 +27,26 @@ __ STDC_VERSION __ | C编译器通常用这个宏来表示所支持的C标准的
 *其基本功能就是返回所在函数的名字。*  
 
 ```cpp
-	#include <string>
-	#include <iostream>
-	using namespace std;
-	const char *hello() { return __func__; }
-	const char *world() { return __func__; }
-	int main()
-	{
-		cout << hello() << "," << world() << endl;
-	}
-	// 编译选项：g++ -std=c++11 xx.cpp
+#include <string>
+#include <iostream>
+using namespace std;
+const char *hello() { return __func__; }
+const char *world() { return __func__; }
+int main()
+{
+	cout << hello() << "," << world() << endl;
+}
+// 编译选项：g++ -std=c++11 xx.cpp
 ```  
 
 ```cpp
-	// 下面的方式是可行的
-	struct TestStruct {
-		TestStruct() : name(__func__) {}
-		const char *name;
-	}
-	// 但是这样的形式是无法通过编译的
-	void FuncFail(string func_name = __func__) {}
-	// 这是由于在参数声明时，__func__还未被定义
+// 下面的方式是可行的
+struct TestStruct {
+	TestStruct() : name(__func__) {}
+	const char *name;
+}
+// 但是这样的形式是无法通过编译的
+void FuncFail(string func_name = __func__) {}
+// 这是由于在参数声明时，__func__还未被定义
 ```  
-
 
