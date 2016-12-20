@@ -1,11 +1,12 @@
 ---
-layout:     post
-title:      "深入理解C++11（笔记）：第二章 保证稳定性与兼容性"
-subtitle:   " \"First step.\""
-date:       2016-12-19 13:39
-header-img: "img/post-bg-2015.jpg" 
+layout: post
+title: 深入理解C++11（笔记）：第二章 保证稳定性与兼容性
+subtitle: ' "First step."'
+date: '2016-12-19 13:39'
+header-img: img/post-bg-2015.jpg
 tags:
-    - c++
+  - c++
+published: true
 ---
 
 > "Let's begin!"
@@ -34,7 +35,7 @@ int main()
     cout << hello() << "," << world() << endl;
 }
 // 编译选项：g++ -std=c++11 xx.cpp
-```
+```  
 ```
 // 下面的方式是可行的
 struct TestStruct {
