@@ -86,6 +86,7 @@ int main()
 
 ### 2.4 宏\_\_cplusplus  
 在C\+\+11中，\_\_cplusplus被预定义为201103L。  
+
 ```cpp
 #if __cplusplus < 201103L
     #error "should use C++11 implementation"
