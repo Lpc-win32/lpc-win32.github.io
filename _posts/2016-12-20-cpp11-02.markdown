@@ -24,7 +24,7 @@ __ STDC_VERSION __ | C编译器通常用这个宏来表示所支持的C标准的
 
 #### 2.1.2 __ func __ 预定义标识符
 *其基本功能就是返回所在函数的名字。*  
-```
+```cpp
 #include <string>
 #include <iostream>
 using namespace std;
@@ -36,7 +36,7 @@ int main()
 }
 // 编译选项：g++ -std=c++11 xx.cpp
 ```  
-```
+```cpp
 // 下面的方式是可行的
 struct TestStruct {
     TestStruct() : name(__func__) {}
