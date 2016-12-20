@@ -1,11 +1,12 @@
 ---
-layout:     post
-title:      "深入理解C++11（笔记）：第二章 保证稳定性与兼容性"
-subtitle:   " \"First step.\""
-date:       2016-12-19 13:39
-header-img: "img/post-bg-2015.jpg" 
+layout: post
+title: 深入理解C++11（笔记）：第二章 保证稳定性与兼容性
+subtitle: ' "First step."'
+date: '2016-12-19 13:39'
+header-img: img/post-bg-2015.jpg
 tags:
-    - c++
+  - c++
+published: true
 ---
 
 > "Let's begin!"
@@ -23,7 +24,7 @@ __ STDC_VERSION __ | C编译器通常用这个宏来表示所支持的C标准的
 
 #### 2.1.2 __ func __ 预定义标识符
 *其基本功能就是返回所在函数的名字。*  
-```
+```cpp
 #include <string>
 #include <iostream>
 using namespace std;
@@ -34,8 +35,8 @@ int main()
     cout << hello() << "," << world() << endl;
 }
 // 编译选项：g++ -std=c++11 xx.cpp
-```
-```
+```  
+```cpp
 // 下面的方式是可行的
 struct TestStruct {
     TestStruct() : name(__func__) {}
