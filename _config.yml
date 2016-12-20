@@ -38,13 +38,6 @@ gems: [jekyll-paginate]
 markdown: kramdown
 kramdown:
   input: GFM                            # use Github Flavored Markdown !important
-   auto_ids: true
-   footnote_nr: 1
-   entity_output: as_char
-   toc_levels: 1..6
-   smart_quotes: lsquo,rsquo,ldquo,rdquo
-   use_coderay: false
-
 
 # Disqus settings
 #disqus_username: _your_disqus_short_name_
