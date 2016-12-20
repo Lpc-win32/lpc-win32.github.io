@@ -26,20 +26,10 @@ permalink: pretty
 paginate: 10
 exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
-auto_ids: true
-footnote_nr: 1
-entity_output: as_char
-toc_levels: 1..6
-smart_quotes: lsquo,rsquo,ldquo,rdquo
-enable_coderay: false
-hard_wrap: false
-syntax_highlighter: rouge
-
+    
 # Gems
 # from PR#40, to support local preview for Jekyll 3.0
 gems: [jekyll-paginate]
-
-
 
 # Markdown settings
 # replace redcarpet to kramdown,
