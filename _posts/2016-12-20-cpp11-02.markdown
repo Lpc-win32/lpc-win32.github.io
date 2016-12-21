@@ -95,4 +95,64 @@ int main()
 ```  
 预处理指令\#error，使得非c++11标准的编译器立即报错并终止编译。  
 
-### 2.5 静态断言
+### 2.5 静态断言  
+#### 2.5.1 断言：运行时与预处理时  
+在C++中，标准在\<cassert\>或\<assert.h\>头文件中为程序员提供了assert宏，==用于在运行时进行断言==。  
+在C++中，程序员可以定义宏NDEBUG来禁用assert宏。  
+```cpp
+// 事实上，assert宏在<cassert>中的实现方式类似于下列形式
+#ifdef NDEBUG
+#define assert(exptr) (static_cast<void>(0))
+#else
+// do some things
+#endif
+```  
+
+> 事实上，通过预处理指令#if和#error的配合，也可以让程序员在预处理阶段进行断言  
+
+#### 2.5.2 静态断言与static_assert  
+static\_assert使用起来非常简单，它接收两个参数，一个是断言表达式，这个表达式通常需要返回一个bool值；一个则是警告信息，它通常是一个字符串。  
+
+```cpp
+template <typename t, typename u> int bit_copy(t &a, u &b)
+{
+    static_assert(sizeof(b) == sizeof(a), "the parameters of bit_copy must have same width.");
+};
+// 这样的错误信息就会在程序的编译时期打印，非常的方便
+```  
+
+> 注意：static_assert的断言表达式的结果必须是在编译时期可以计算的表达式，即必须是常量表达式。  
+
+### 2.6 noexception修饰符与noexcept操作符  
+异常通常用于路基上可能发生的错误。  
+noexcept修饰函数不会抛出异常。与throw()不同的是，在C\+\+中如果noexcept修饰的函数抛出了异常，编译器可以选择直接调用std::terminate()函数来终止程序的运行，这样的效率高于异常机制的throw()。  
+
+```cpp
+void excpt_func() noexcept;
+void excpt_func() noexcept (常量表达式);
+// 缺省为true，表示函数不会抛出异常
+// 反之，则表示有异常抛出
+```  
+
+```cpp
+// noexcept作为一个操作符时，通常可以用于模板
+template <calss T>
+void fun() noexcept(noexcept(T())) {}
+// 这里fun函数是否是一个noexcept的函数，将由T()表达式是否会抛出异常所决定。
+// 这里的第二个noexcept就是一个noexcept操作符。
+// 当其参数是一个有可能抛出异常的表达式的时候，其返回值为false，反之为true
+```  
+
+> 虽然noexcept修饰的函数通过std::terminate的调用来结束程序的执行的方式可能会带来很多问题（析构函数正常调用，栈无法自动释放）。但是提高了程序退出的速率。往往是更加有效的。  
+
+```cpp
+// 在C++98中，new可能会包含一些抛出的std::bad_alloc异常
+void *operator new(std::size_t) throw(std::bad_alloc);
+// 在C++11中，使用noexcept(false)来进行替代
+void *operator new(std::size_t) noexcept(false);
+```
+
+> noexcept更大的作用是保证应用程序的安全。一个类析构函数不应抛出异常。因此应在析构函数以及析构函数经常调用的delete函数设置成noexcept，借此提高程序的安全性  
+C++11中析构函数在缺省的情况下被默认设置为noexcept(true)，从而阻止了异常的扩散。  
+
+### 2.7 快速初始化成员变量  
