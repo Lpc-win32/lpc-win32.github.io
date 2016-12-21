@@ -96,9 +96,12 @@ int main()
 预处理指令\#error，使得非c++11标准的编译器立即报错并终止编译。  
 
 ### 2.5 静态断言  
+
 #### 2.5.1 断言：运行时与预处理时  
+
 在C++中，标准在\<cassert\>或\<assert.h\>头文件中为程序员提供了assert宏，==用于在运行时进行断言==。  
 在C++中，程序员可以定义宏NDEBUG来禁用assert宏。  
+
 ```cpp
 // 事实上，assert宏在<cassert>中的实现方式类似于下列形式
 #ifdef NDEBUG
@@ -111,6 +114,7 @@ int main()
 > 事实上，通过预处理指令#if和#error的配合，也可以让程序员在预处理阶段进行断言  
 
 #### 2.5.2 静态断言与static_assert  
+
 static\_assert使用起来非常简单，它接收两个参数，一个是断言表达式，这个表达式通常需要返回一个bool值；一个则是警告信息，它通常是一个字符串。  
 
 ```cpp
@@ -124,6 +128,7 @@ template <typename t, typename u> int bit_copy(t &a, u &b)
 > 注意：static_assert的断言表达式的结果必须是在编译时期可以计算的表达式，即必须是常量表达式。  
 
 ### 2.6 noexception修饰符与noexcept操作符  
+
 异常通常用于路基上可能发生的错误。  
 noexcept修饰函数不会抛出异常。与throw()不同的是，在C\+\+中如果noexcept修饰的函数抛出了异常，编译器可以选择直接调用std::terminate()函数来终止程序的运行，这样的效率高于异常机制的throw()。  
 
