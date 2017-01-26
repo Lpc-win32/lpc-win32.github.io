@@ -8,4 +8,584 @@ tags:
     - c++
 ---
 
+> C\+\+11中的新特性往往具有广泛的可用性。  
 
+### 3.1 继承构造函数  
+
+类具有可派生性，派生类可以自动获得基类的成员变量和接口。不过基类的非虚函数则无法再被派生类使用了。  
+
+```cpp
+struct A {
+    A(int i) {}
+    A(double d, int i) {}
+    A(float f, int i, const char *c) {}
+};
+
+struct B : A {
+    B(int i) : A(i) {}
+    B(double d, int i) : A(d, i) {}
+    B(float f, int i, const char *c) : A(f, i, c) {}
+    // ...
+    virtual void ExtraInterface() {}
+};
+```  
+
+> 在C\+\+中已经有了一个好用的规划，就是如果派生类要使用基类成员函数的话，可以通过使用using声明来完成。  
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+struct Base {
+    void f(double i) { cout << "Base : " << i << endl; }
+};
+struct Derived : Base {
+    using Base::f;
+    void f(int i) { cout << "Derived:" << i << endl; }
+};
+
+int main() {
+    Base b;
+    b.f(4.5);   //Base:4.5
+    Derived d;
+    d.f(4.5);   //Base:4.5
+}
+```  
+
+> 在C\+\+11中，这个想法被扩展到了构造函数上。子类可以通过使用using声明来声明继承基类的构造函数。  
+
+```cpp
+struct A {
+    A(int i) {}
+    A(double d, int i) {}
+    A(float f, int i, const char *c) {}
+};
+struct B : A {
+    using A::A;     //继承构造函数
+    virtual void ExtraInterface() {}
+    
+    /*
+     *  这里我们通过using A::A的声明，将基类中的构造函数悉
+     *  数继承到派生类B中。这样“透传”构造函数就不再需要了
+     */
+}
+```  
+
+> 对于集成构造函数来讲，参数的默认值是不会被继承的。默认值回导致基类产生多个构造函数的版本，这些函数版本都会被派生类继承  
+
+```cpp
+struct A { A(int) {} };
+struct B { B(int) {} };
+struct C : A, B {
+    using A::A;
+    using B::B;
+    // 注意：A和B的构造函数会导致C中重复定义相同类型的集成构造函数。
+    // 这种情况下，需要通过显示定义继承类冲突的构造函数
+    C(int) {}
+};
+```  
+
+> 如果一旦使用了继承构造函数，编译器就不会再为派生类生成默认构造函数了
+
+```cpp
+struct A { A(int) {} };
+struct B : A {
+    using A::A;
+};
+B b;    // B没有默认构造函数
+```  
+
+### 3.2 委派构造函数  
+
+委派构造函数是C\+\+11中对构造函数的一项改进，目的是减少程序员书写构造函数的时间。  
+
+```cpp
+classs Info {
+public:
+    Info() : type(1), name('a') { InitRest(); }
+    Info(int i) : type(i), name('a') { InitRest(); }
+    Info(char e) : type(1), name(e) { InitRest(); }
+private:
+    void InitRest() {}
+    int  type;
+    char name;
+};
+```  
+
+```cpp
+// 我们可以使用这样的方式对代码进行简化
+// placement new可以强制在本地对象地址上调用类的构造函数
+// 但是这种方式是十分危险的
+Info() { InitRest(); }
+Info(int i) { new (this) Info(); type = i; }
+Info(char e) { new (this) Info(); name = e; }
+```  
+
+> 在C\+\+11中，我们可以使用委派构造函数来达到期望的效果。C\+\+11中的委派构造函数实在构造函数的初始化列表位置进行构造、委派的。  
+
+```cpp
+class Info {
+public:
+    Info() { InitRest(); }  // 目标构造函数
+    Info(int i) : Info() { type = i; }  // 委派构造函数
+    Info(char e) : Info() { name =e; }
+private:
+    void InitRest() {}
+    int type {1};
+    char name {'a'};
+};
+```  
+
+注意：我们不能在初始化列表中即初始化成员又委托其他构造函数完成构造。在C\+\+11中，目标构造函数的执行总是先于委派构造函数的。  
+
+```cpp
+// 如果在委派构造函数中使用try的话，那么从目标构造函数中产生
+// 的异常，都可以在委派构造函数中被捕捉到
+#include <iostream>
+using namespace std;
+class DCExcept {
+public:
+    DCExcept(double d)
+        try : DCExcept(1, d) {
+            cout << "Run the body." << endl;
+        } catch(...) {
+            cout << "caught exception." << endl;
+        }
+private:
+    DCExcept(int i, double d) {
+        cout << "going to throw!" << endl;
+        throw 0;
+    }
+    int type;
+    double data;
+};
+
+int main()
+{
+    DCExcept a(1.2);
+}
+
+// going to throw!
+// caught exception.
+// terminate called after throwing an instance of 'int'
+```  
+
+### 3.3 右值引用：移动语义和完美转发  
+
+#### 3.3.1 指针成员与拷贝构造  
+
+> “浅拷贝”通常会造成空悬指针等权重的内存问题，通过使用“深拷贝”可以解决这类问题的发生  
+
+#### 3.3.2 移动语义  
+
+> 拷贝构造函数中为指针成员分配新的内存在进行内容拷贝的做法在C\+\+编程中几乎被视为不可违背的。不过在一些时候，我们确实不需要这样的拷贝构造语义。  
+
+```cpp
+#include <iostream>
+using namespace std;
+class HasPtrMem {
+public:
+    HasPtrMem() : d(new int(0)) {
+        cout << "Construct : " << ++n_cstr << endl;
+    }
+    HasPtrMem(const HasPtrMem &h) : d(new int(*h.d)) {
+        cout << "Copy construct : " << ++n_cptr << endl;
+    }
+    ~HasPtrMem() {
+        cout << "Destruct : " << ++n_dstr << endl;
+    }
+    int *d;
+    static int n_cstr;
+    static int n_dstr;
+    static int n_cptr;
+};
+int HasPtrMem::n_cstr = 0;  // 存在的理由：用于分配内存
+int HasPtrMem::n_dstr = 0;
+int HasPtrMem::n_cptr = 0;
+HasPtrMem GetTemp() { return HasPtrMem(); }
+int main() {
+    HasPtrMem a = GetTemp();
+}
+
+// Construct : 1
+// Copy construct : 1
+// Destruct : 1
+// Copy construct : 2
+// Destruct : 2
+// Destruct : 3
+```  
+
+> GetTemp函数中HasPtrMem()生成的变量上拷贝构造是一个临时值，以用作GetTemp的返回值，而另外一次则是由临时之构造出main中变量a调用的。对应的，析构函数也就调用了3次  
+
+![image](https://lpc-win32.github.io/img/2016-12-29/copy_construct.png)
+
+拷贝构造函数的开销是非常大的，尤其是在对象庞大的情况下，对资源的浪费是非常多的。  
+
+![image](https://lpc-win32.github.io/img/2016-12-29/move_construct.png)
+
+> 在C\+\+11中，这样的“偷走”临时变量中资源的函数，就被称为“移动构造函数。  
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class HasPtrMem {
+public:
+    HasPtrMem() : d(new int(3)) {
+        cout << "Construct : " << ++n_cstr << endl;
+    }
+    HasPtrMem(const HasPtrMem & h) : d(new int(*h.d)) {
+        cout << "Copy construct : " << ++n_cptr << endl;
+    }
+    HasPtrMem(HasPtrMem && h) : d(h.d) {
+        // 移动构造函数
+        h.d = nullptr;
+        cout << "Move construct : " << ++mvtr << endl;
+    }
+    ~HasPtrMem() {
+        delete d;
+        cout << "Destruct : " << ++n_dstr << endl;
+    }
+    
+    int *d;
+    static int n_cstr;
+    static int n_dstr;
+    static int n_cptr;
+    static int n_mvtr;
+};
+
+int HasPtrMem::n_cstr = 0;
+int HasPtrMem::n_dstr = 0;
+int HasPtrMem::n_cptr = 0;
+int HasPtrMem::n_mvtr = 0;
+
+HasPtrMem GetTemp() {
+    HasPtrMem h;
+    cout << "Resource from " << __func__ << " : " << hex << h.d << endl;
+    return h;
+}
+
+int main() {
+    HasPtrMem a = GetTemp();
+    cout << "Resource from " << __func__ << " : " << hex << a.d << endl;
+}
+
+/*
+Construct : 1
+Resource from GetTemp : 0x603010
+Move construct : 1
+Destruct : 1
+Move construct : 2
+Destruct : 2
+Resourct from main : 0x603010
+Destruct : 3
+*/
+```
+
+#### 3.3.3 左值、右值与右值引用
+
+> 在C\+\+11程序中，所有的值必须术语左值、将亡值、纯右值三者之一。  
+C\+\+11中，右值引用就是对一个右值进行引用的类型。事实上，由于右值通常不具有名字，我们也只能通过引用的方式找到它的存在。  
+
+```cpp
+T && a = ReturnRvalue();
+// 通过右值引用，该右值再次重获新生
+
+int c;
+int && d = c;   // 编译无法通过
+
+T & e = ReturnRvalue();     // 错误
+const T & f = ReturnRvalue();   // 通过
+// 常量左值引用在C++98标准中开始就是个“万能”的引用类型。
+```
+
+> 有的时候，我们可能不知道一个类型是否是引用类型，以及是左值引用还是右值引用。标准库在<type_traits>头文件中提供了三个模板类：is_rvalue_reference、is_lvalue_reference、is_reference，可供我们判断
+
+#### 3.3.4 std::move：强制转化为右值
+
+> 在C\+\+11中，标准库在<utility>中提供了一个有用的函数std::move，这个函数的文艺功能是讲一个左值强制转化为右值引用，以用于移动语义。
+
+```cpp
+// 从事线上讲，std::move基本等同于一个类型转换
+static_cast<T &&>(lvalue);
+```
+
+```cpp
+#include <iostream>
+using namespace std;
+class Moveable {
+public:
+    Moveable() : i(new int(3)) {}
+    ~Moveable() { delete i; }
+    Moveable(const Moveable &m) : i(new int(*m.i)) {}
+    Moveable(Moveable && m) : i(m.i) {
+        m.i = nullptr;
+    }
+private:
+    int *i;
+};
+int main()
+{
+    Moveable a;
+    Moveable c(move(a));
+    cout << *a.i << endl;   // 运行时会出错
+}
+```
+
+#### 3.3.5 移动语义的一些其他问题
+
+> 移动语义一定是要修改临时变量的值。因为临时变量的引用必须要修改，因此才叫“移动”
+
+```cpp
+// C++11中，拷贝/移动构造函数版本
+T Object(T &)
+T Object(const T &)
+T Object(T &&)
+```
+
+> C\+\+11中，拷贝构造/赋值和移动构造/赋值函数必须同时提供，或者同时不提供，程序员才能保证类同时具有拷贝和移动语义。只声明其中一种，类都仅能实现一种语义
+
+
+```cpp
+template <class T>
+void swap(T &a, T &b)
+{
+    T tmp(move(a));
+    a = move(b);
+    b = move(tmp);
+}
+
+// 整个过程，代码都只会按照移动语义进行指针交换，不会有资源的释放与申请。
+```
+
+> 对于移动构造函数来说，抛出异常有时是件危险的事情。因为可能移动羽翼还没完成，一个异常就出来了。会导致一些指针称为空悬指针。在标准库中，我们可以用std::move_if_noexcept的模板函数替代move函数。该函数在类的移动构造函数没有noexcept关键字修饰时返回一个左值引用从而使变量可以使用拷贝语义，而在类的移动构造函数有noexcept关键字时，返回一个右值引用，从而使变量可以使用移动语义。
+
+#### 3.3.6 完美转发
+
+> 完美转发，是指在函数模板中，完全依照模板的参数的类型，将参数传递给函数模板中调用的另外一个函数
+
+```cpp
+template <typename T>
+void IanForwording(T t) { IrunCodeActually(t); }
+```
+
+> C\+\+11引入了“引用折叠”的新语言规则，并结合新的模板推导完成完美转发（易混淆）
+
+### 3.4 显式转换操作符
+
+> 在C\+\+11中，有个非常好也飞车那个坏的特性，就是隐式类型转换。隐式类型构造可以让程序员免于层层构造类型。但是也是由于它的自动性，会出现不容易被发现的错误。  
+
+> C\+\+中使用explicit关键字修饰的构造函数，意味着这个构造函数不可以被隐式调用。  
+
+C\+\+11中，标准将explict的使用范围扩展到了自定义的类型转换操作符上，以支持以支持所谓的“显示类型转换”。explicit关键字作用于类型转换操作符上，意味着只有在直接构造目标类型或显式类型转换的时候可以使用该类型。  
+
+```cpp
+class ConvertTo {};
+class Convertable {
+    explicit operator ConvertTo() const
+    {
+        return ConvertTo();
+    }
+};
+void Func(ConvertTo ct) {}
+void test() {
+    Convertable c;      // 直接初始化，通过
+    ConvertTo ct(c);
+    ConvertTo ct2 = c;  // 失败
+    ConvertTo ct3 = static_cast<ConvertTo>(c);   // 强制转化，通过
+    Func(c);    // 失败
+}
+```  
+
+### 3.5 列表初始化
+
+#### 3.5.1 初始化列表
+
+> 在C\+\+98中，标准允许{}对数组元素进行统一的集合初始化设定，比如：
+
+```cpp
+int arr[5] = {0};
+int arr[] = {1, 2, 3, 4};
+```
+
+> 不过，自定义类型却不能这样便利的初始化。在C\+\+11中，解决了这个问题。这种初始化方法被称为“初始化列表”。标准模板库中容器对初始化列表的支持源自<initializer_list>这个文件中initialize_list类模板的支持。程序员制药#include了<initializer_list>头文件，并且生命一个以initialize_list<T>模板类为参数的构造函数，同样可以使得自定义的类使用列表初始化。
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+enum Gender {boy, girl};
+class People {
+public:
+    People(initializer_list<pair<string, Gender>> l) {
+        auto i = l.begin();
+        for(; i != l.end(), ++i) {}
+            data.push_back(*i);
+    }
+private:
+    vector<pair<string, Gender>>data;
+};
+
+People ship = {{"Garfield", boy}, {"Titi Zhu"}, gril};
+```
+
+> 同样的，函数的参数列表也可以使用初始化列表
+
+```cpp
+#include <initializer_list>
+using namespace std;
+void Fun(initializer_list<int> iv)
+{
+    // ...
+}
+int main()
+{
+    Func({1,2});
+    Func({});   //空列表
+}
+```
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+class Mydata {
+public:
+    Mydata & operator [] (initializer_list<int> l)
+    {
+        for (auto i = l.begin(); i!=l.end(); ++i)
+            idx。push_back(*i);
+        return *this;
+    }
+    Mydata & operator = (in v)
+    {
+        if (idx.empty() != true) {
+            for (auto i = idx.begin(); i != idx.end(); ++i) {
+                d.resize((*i > d.size()) ? *i : d.size());
+                d[*i - 1] = v;
+            }
+            idx.clear();
+        }
+        return *this;
+    }
+    void Print()
+    {
+        for (auto i = d.begin(); i != d.end(); ++i) {
+            cout << *i << " ";
+        }
+        cout << endl;
+    }
+private:
+    vector<int> idx;
+    vector<int> d;
+};
+int main()
+{
+    Mydata d;
+    d[{2, 3, 5}] = 7;
+    d[{1, 4, 5, 8}] = 4;
+    d.Print();  //4 7 7 4 4 0 0 4
+    return 0;
+}
+```
+
+#### 3.5.2 防止类型收窄
+
+> 类型收窄一般是指一些可以使得数据变化活着京都丢失的隐式类型转换。使用列表舒适化还有一个最大优势是可以防止类型收窄。在C\+\+11中，列表初始化是唯一一种课哟防止类型收窄的初始化方式。
+
+### POD类型
+
+> POD是英文中Plain Old Data的缩写。POD在C\+\+中是一个非常重要的概念，通畅用于说明一个类型的属性，尤其是用户自定义类型的属性。
+
+> C\+\+11将POD划分为两个基本概念的合集，即：平凡的和标准布局的。
+
+```
+通常情况下，一个平凡的类huo或结构体应该符合以下定义：
+    1. 拥有平凡的默认构造函数和析构构造函数。
+    平凡的默认构造函数就是说构造函数“什么都不干”。指的是编译器为我们生成一个平凡的默认构造函数。
+    而一单定义了构造函数，即使构造函数不包含参数，不包含任何代码。也不再是“平凡的”
+    2. 拥有平凡的拷贝构造函数和移动构造函数。
+    3. 拥有平凡的拷贝赋值运算符和移动赋值运算符
+    4. 不能包含虚函数以及虚基类
+```
+
+> 在C+\+\11中，我们可以通过一些辅助的类模板来帮我们进行以上属性的判断
+
+    template <typename T> struct std::is_trivial;
+
+```
+POD包含的另外一个概念是标准布局。
+标准布局类或结构体应该符合以下定义：
+    1. 所有非静态成员有相同的访问权限
+    2. 在类或者结构体继承时，满足以下两种情况之一：
+        派生类中有非静态成员，且只有一个仅包含静态成员的基类
+        基类有非静态成员，而派生类没有非静态成员
+    3. 类中第一个非静态成员的类型与其基类不同。
+    struct A : B { B b; } // 这里的A类型不是一个标准布局的类型。
+    4. 没有虚函数和虚基类
+    5. 所有非静态数据成员均符合标准布局类型，其基类也符合标准布局。
+```
+
+> 对于POD而言，在C\+\+11的定义就是平凡的和标准布局的两个方面。
+
+```
+#include <type_traits>
+template <typename T> struct std::is_pod;
+// 来判断是否是POD类型
+```
+
+```
+POD类型有什么好处？
+    1. 字节赋值。
+    代码中我们可以安全地使用memset和memcpy对POD类型进行初始化和赋值和拷贝等操作
+    2. 提供对C内存布局兼容。
+    C++程序可以与C函数进行相互操作，因为POD类型的数据在C与C++间的操作总是安全的
+    3. 保证了静态初始化的安全有效。
+    静态初始化在很多时候能够提高程序的性能，而POD类型的对象初始化往往更加简单
+```
+
+### 3.7 非受限联合体
+
+> 根据C/C\+\+中，联合体时一种构造类型的数据类型。根据C\+\+98中的标准，并不是所有的数据类型都能够成为联合体的数据成员。要求union类型必须是POD类型。在长期的实践应用证明，C\+\+98标准对联合体的限制是完全没有必要的
+
+> C\+\+11标准中，取消了联合体对数据成员类型的限制。不允许静态成员变量的存在
+
+### 3.8 用户自定义字面量
+
+> C\+\+允许我们通过定义一个后缀标识的操作符，将声明了该后缀标识的字面量转化为需要大的类型
+
+```
+RGBA operator "" _C(const char *col, size_t n);
+```
+
+### 3.9 内联名字空间
+
+> C\+\+11中，通过关键字inline namespace就可以声明一个內联名字空间。內联的名字空间允许程序员在父名字空间定义或特化子名字空间的模板。
+
+### 3.10 模板的别名
+
+> C\+\+11中，using关键字的能力已经包括了typedef的部分。
+
+```cpp
+template<typename T>using MapString = std::map<T, char *>;
+MapString<int> numberedString;
+```
+
+### 3.11 一般化的SFINEA规则
+
+> C\+\+模板中，有一条著名的规则，即SFINEA-Substitution failure is not an error，中文直译就是“匹配失败不是错误”。这条规则表示的是对重载的模板的参数进行展开的时候，如果展开导致了一些类型不匹配，编译器并不会报错
+
+```cpp
+struct Test {
+    typedef int foo;
+};
+template <typename T>
+void f(typename T:: foo) {}
+template <typename T>
+void f(T) {}
+int main() {
+    f<Test>(10);
+    f<int>(10); // 由于SFINEA，虽然不存在类型int:: foo也不会发生编译错误
+}
+```
