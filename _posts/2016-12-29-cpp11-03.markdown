@@ -411,7 +411,7 @@ int arr[] = {1, 2, 3, 4};
 
 > 不过，自定义类型却不能这样便利的初始化。在C\+\+11中，解决了这个问题。这种初始化方法被称为“初始化列表”。标准模板库中容器对初始化列表的支持源自<initializer_list>这个文件中initialize_list类模板的支持。程序员制药#include了<initializer_list>头文件，并且生命一个以initialize_list<T>模板类为参数的构造函数，同样可以使得自定义的类使用列表初始化。
 
-```cpp
+```
 #include <vector>
 #include <string>
 using namespace std;
