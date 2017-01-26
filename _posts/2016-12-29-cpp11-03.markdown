@@ -427,7 +427,7 @@ private:
     vector<pair<string, Gender>>data;
 };
 
-People ship = {{"Garfield", boy}, {"Titi Zhu"}, gril};
+People ship = {{"Garfield", boy}, {"Titi Zhu", gril}};
 ```
 
 > 同样的，函数的参数列表也可以使用初始化列表
