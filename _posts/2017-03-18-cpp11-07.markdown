@@ -1,0 +1,124 @@
+---
+layout:     post
+title:      "深入理解C++11（笔记）：第七章 为思考方式而改变"
+subtitle:   " \"First step.\""
+date:       2017-03-18 10:45
+header-img: "img/post-bg-2015.jpg" 
+tags:
+    - c++
+    - c++11
+---
+
+> "Let's begin!"
+
+### 7.1 指针空值--nullptr
+
+#### 7.1.1 指针空值：从0到NULL，再到nullptr
+
+> 一般情况下，NULL是一个宏定义。在传统的C头文件(stddef.h)中我们可以看到如下代码：
+
+```cpp
+#undef NULL
+#if define(__cplusplus)
+#define NULL 0
+#else
+#define NULL ((void *)0)
+#endif
+```
+
+> 因此，NULL值得不唯一性在C\+\+程序中可能会出现重载函数调用非预期等问题
+
+#### 7.1.2 nullptr和nullptr_t
+
+### 7.2 默认函数的控制
+
+#### 7.2.1 类与默认函数
+
+> 在C\+\+中声明自定义的类，编译器会默认帮助程序员生成一些他们未定义的成员函数。这样的函数版本被称为“默认函数”。这些包括了以下一些自定义类型的成员函数：
+
+- 构造函数
+- 拷贝构造函数
+- 拷贝赋值函数（operator=）
+- 移动构造函数
+- 移动拷贝函数
+- 析构函数
+
+> 此外，C\+\+编译器还会为以下这些自定义类型提供全局默认操作符函数：
+
+- operator,
+    - operator&
+    - operator&&
+    - operator*
+    - operator->
+    - operator->*
+    - operator new
+    - operator delete
+
+    > 不过，一旦声明了自定义版本的构造函数，则有可能导致我们定义的类型不再是POD的
+
+    ```cpp
+#include <tyoe_traits>
+#include <iostream>
+    using namespace std;
+    class TwoCstor {
+            public:
+                        TwoCstor() {};
+                                TwoCstor(int i) : data(i) {}
+                                    private:
+                                        int data;
+    };
+int main() {
+        cout << is_pod<TwoCstor>::value << endl;    // 0
+}
+```
+
+> 而在C\+\+11中，标准是通过提供了新的机制来空值默认版本函数的生成来完成这个目标的。程序员可以在默认函数定义或者声明时加上“=default”，从而显示指示编译器生成该函数的默认版本
+
+
+> 同时，在C++11中，防止外部函数调用相应构造函数的方法更为简单。即在函数的定义或者声明加上“=delete”。“=delete”会指示编译器不生成函数的缺省版本
+
+#### 7.2.2 “=ddefalut”与“=delete”
+
+### 7.3 lambda函数
+
+#### 7.3.1 lambda的一些历史
+
+#### 7.3.2 C\+\+11中的lambda函数
+
+> lambda函数显得与之前C\+\+规范下的代码在风格上有较大差别。
+
+```cpp
+int main() {
+        int girls = 3, boys = 4;
+            auto totalChild = [](int x, int y)->int { return x + y; };
+                return totalChild(girls, boys);
+}
+```
+
+> lambda函数采用了追踪返回类型的方式声明其返回值。
+
+```cpp
+[capture](parameters) muteable ->return-type {statement}
+```
+
+#### 7.3.3 lambda与仿函数
+
+> 仿函数等同于函数对象。简单地说，仿函数就是重定义了成员函数operator()的一种自定义类型对象。
+
+```cpp
+class _functor {
+        public:
+                    int operator()(int x, int y) {
+                                    return x + y;
+                                            }
+};
+int main() {
+        _functor totalChild;
+            int girls = 3, boys = 4;
+                return totalChild(5, 6);
+}
+```
+
+> 对比lambda与上述代码，可以得出结论：C\+\+11中，lambda可以视为仿函数的一种等价形式了，或者更动听地说，lambda是仿函数的“语法甜点”
+
+
