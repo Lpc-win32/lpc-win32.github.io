@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "C++11网络库-libttzhu正式启动"
+title:      "C++11网络库：libttzhu正式启动"
 subtitle:   " \"项目启动前吹的一波牛逼....\""
 date:       2017-03-18 10:45
 header-img: "img/post-bg-2015.jpg" 
