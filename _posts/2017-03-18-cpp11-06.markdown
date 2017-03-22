@@ -1,12 +1,13 @@
 ---
-layout:     post
-title:      "深入理解C++11（笔记）：第六章 提高性能及操作硬件的能力"
-subtitle:   " \"First step.\""
-date:       2017-03-18 10:05
-header-img: "img/post-bg-2015.jpg" 
+layout: post
+title: 深入理解C++11（笔记）：第六章 提高性能及操作硬件的能力
+subtitle: ' "First step."'
+date: '2017-03-18 10:05'
+header-img: img/post-bg-2015.jpg
 tags:
-    - c++
-    - c++11
+  - c++
+  - c++11
+published: true
 ---
 
 > "Let's begin!"
@@ -42,8 +43,8 @@ constexpr int j = 1;
 // 注意：C++11标准中，constexpr关键字是不能用于修饰自定义类型的。除非自定义类型的定义的构造函数用constexpr关键字修饰
 
 struct MyType {
-        constexpr MyType(int x) : i(x) {}
-            int i;
+    constexpr MyType(int x) : i(x) {}
+    int i;
 };
 constexpr MyType mt = {0};
 ```
@@ -123,5 +124,3 @@ atomic_llong total {0};
 ```cpp
 int thread_local errCode;
 ```
-
-
