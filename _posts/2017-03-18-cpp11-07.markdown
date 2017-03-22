@@ -1,12 +1,13 @@
 ---
-layout:     post
-title:      "深入理解C++11（笔记）：第七章 为思考方式而改变"
-subtitle:   " \"First step.\""
-date:       2017-03-18 10:45
-header-img: "img/post-bg-2015.jpg" 
+layout: post
+title: 深入理解C++11（笔记）：第七章 为思考方式而改变
+subtitle: ' "First step."'
+date: '2017-03-18 10:45'
+header-img: img/post-bg-2015.jpg
 tags:
-    - c++
-    - c++11
+  - c++
+  - c++11
+published: true
 ---
 
 > "Let's begin!"
@@ -61,14 +62,14 @@ tags:
 #include <iostream>
     using namespace std;
     class TwoCstor {
-            public:
-                        TwoCstor() {};
-                                TwoCstor(int i) : data(i) {}
-                                    private:
-                                        int data;
+    	public:
+        	TwoCstor() {};
+            TwoCstor(int i) : data(i) {}
+        private:
+            int data;
     };
 int main() {
-        cout << is_pod<TwoCstor>::value << endl;    // 0
+    cout << is_pod<TwoCstor>::value << endl;    // 0
 }
 ```
 
@@ -89,9 +90,9 @@ int main() {
 
 ```cpp
 int main() {
-        int girls = 3, boys = 4;
-            auto totalChild = [](int x, int y)->int { return x + y; };
-                return totalChild(girls, boys);
+    int girls = 3, boys = 4;
+    auto totalChild = [](int x, int y)->int { return x + y; };
+    return totalChild(girls, boys);
 }
 ```
 
@@ -107,18 +108,16 @@ int main() {
 
 ```cpp
 class _functor {
-        public:
-                    int operator()(int x, int y) {
-                                    return x + y;
-                                            }
+    public:
+        int operator()(int x, int y) {
+             return x + y;
+        }
 };
 int main() {
-        _functor totalChild;
-            int girls = 3, boys = 4;
-                return totalChild(5, 6);
+    _functor totalChild;
+    int girls = 3, boys = 4;
+    return totalChild(5, 6);
 }
 ```
 
 > 对比lambda与上述代码，可以得出结论：C\+\+11中，lambda可以视为仿函数的一种等价形式了，或者更动听地说，lambda是仿函数的“语法甜点”
-
-
