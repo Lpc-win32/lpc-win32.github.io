@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Linux多线程服务端编程：第三章 多线程服务器的适用场合与常用编程模型"
+title:      "Linux多线程服务端编程：第四章 C++多线程系统编程精要"
 subtitle:   " \"码农生来只知道前进！\""
 date:       2017-03-28 22:55
 header-img: "img/post-bg-unix-linux.jpg" 
