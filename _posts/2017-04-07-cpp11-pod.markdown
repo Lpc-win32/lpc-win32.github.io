@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "C++11 '=default','=delete'"
+title:      "What is C++11 POD?"
 subtitle:   " \"POD理论性概念，POD的概念在C++中非常重要....\""
 date:       2017-04-07 19:25
 header-img: "img/post-bg-unix-linux.jpg"
