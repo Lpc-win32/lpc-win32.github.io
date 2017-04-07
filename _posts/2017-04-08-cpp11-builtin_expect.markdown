@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "what is \_\_builtin\_expect?"
+title:      "what is __builtin_expect?"
 subtitle:   " \"likely()与unlikely()....\""
 date:       2017-04-08 00:25
 header-img: "img/post-bg-unix-linux.jpg"
