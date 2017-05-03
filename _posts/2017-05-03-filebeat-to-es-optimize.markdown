@@ -42,13 +42,13 @@ filebeat是性能非常出色的文件采集工具，绝大多数的业务日志
 
 方便起见，我直接贴图片了。当然，这些配置只能作为参考。不同的机器性能、网络带宽等适用的配置也不会相同
 
-1. input端配置调优
+input端配置调优
 
 ![image](https://lpc-win32.github.io/img/2017-05-03/optimize-1.png)
 
-2. output.elasticsearch端配置调优
+output.elasticsearch端配置调优
 
-![image](https://lpc-win32.github.io/img/2017-05-03/optimize-1.png)
+![image](https://lpc-win32.github.io/img/2017-05-03/optimize-2.png)
 
 ### 4. filebeat源码层面优化
 
