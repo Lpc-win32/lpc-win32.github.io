@@ -2,7 +2,7 @@
 layout:     post
 title:      "C++程序中如何避免死锁？"
 subtitle:   " \"c++11 dead-lock\""
-date:       2017-04-17 17:29
+date:       2017-05-05 15:05
 header-img: "img/post-bg-unix-linux.jpg"
 tags:
     - c++
