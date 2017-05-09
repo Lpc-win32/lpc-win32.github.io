@@ -1,9 +1,9 @@
 # Site settings
 title: Lpc-Win32's Blog
-SEOTitle: Lpc-Win32博客 | Lpc-Win32 Blog
+SEOTitle: Lpc-Win32博客 | Lpc-Win32 Blog | C++11 | CPP | Linux | GO | NetWork | 高并发
 header-img: img/home-bg.jpg
 email: 312041933@qq.com
-description: ""
+description: "关注的领域: CPP | C++11 | Linux | GO | Nework | Docker | Kubernetes | 容器云 | ELK | 高并发 | Routine"
 keyword: "lpc-win32,Linux,cpp,c++11,c,kernel,libttzhu"
 #url: "https://lpc-win32.github.io"              # your host, for absolute URL
 #baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
@@ -58,7 +58,7 @@ duoshuo_share: false                     # set to false if you want to use Comme
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "学习、分享与沉淀"
+sidebar-about-description: "文章较多时，请移至页面上方点击TAG进行分类搜索"
 sidebar-avatar: /img/avatar-lpc.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
