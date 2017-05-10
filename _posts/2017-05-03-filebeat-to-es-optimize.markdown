@@ -98,6 +98,13 @@ func (p *syncLogPublisher) Start() {
 
 ![image](https://lpc-win32.github.io/img/2017-05-03/filebeat-es.png)
 
+为什么可以这么写？那么在此聊一聊filebeat的几个关键点：  
+- 一次Publish，上传多少行的日志量？这个这个值在filebeat.spool\_size中定义  
+- Publish中做了什么？启动worker个协程推送filebeat.spool\_size行日志到ES中，阻塞，等待所有协程推送完毕后继续执行。因此，上部分代码不会影响此处
+- offset问题，offset会不会导致不同publish线程发送重复数据？Harvester组件对offset进行修改（读日志组件，在Publish）之前，因此offset不会影响日志publish重复问题
+
+![image](https://lpc-win32.github.io/img/2017-05-03/filebeat-modules.png)
+
 ### 5. 进一步可优化项
 
 - filebeat.template-es2x.json
