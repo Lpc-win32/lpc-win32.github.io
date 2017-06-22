@@ -64,7 +64,7 @@ etcd是用于共享配置和服务发现的分布式，一致性的KV存储系�
 
 hpa-custom-controller采用go语言编写。目的用于更好的兼容k8s、promethues、etcd等golang编写的组件（高可用组件使用了k8s-pkg中提供的package完成）
 
-hpa-custom-controller源码地址: www.github.com/Lpc-win32/hpa-custom-controller
+hpa-custom-controller源码地址: [Lpc-win32/hpa-custom-controller](https://github.com/Lpc-win32/hpa-custom-controller)
 
 > 由于本人是golang的初学者，代码里写的比较low的地方，欢迎直接喷出来~~在此感谢各位
 
@@ -120,3 +120,5 @@ hpa-custom-controller在我们的集群中是随k8s-master启动的(将hpa-custo
 1. 这是一个beta版本的blog，来介绍hpa-custom-controller
 2. hpa-custom-controller强依赖于promethues组件，但是promethues在指标量过大时，会存在“不存”指标等问题。后面我会介绍一下promethues优化的文章
 3. hpa-custom-controller代码中存在一些低效环节，我会尽快优化。同时也感谢大家的帮助
+
+==来自:http://blog.lpc-win32.com/2017/06/22/k8s-hpa-custom-controller-achieve/==
