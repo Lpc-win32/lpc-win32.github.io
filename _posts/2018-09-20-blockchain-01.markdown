@@ -1,0 +1,273 @@
+---
+layout:     post
+title:      "ipfs星际文件系统简介"
+subtitle:   " \"ipfs简介\""
+date:       2018-09-29 14:26
+header-img: "img/post-bg-ipfs.jpg" 
+tags:
+    - ipfs
+    - blockchain
+---
+
+### 1.概述
+
+- IPFS（InterPlanetary File System）星际文件系统，是一个点对点的分布式超媒体分发协议，它整合了过去几年最好的分布式系统思路，为所有人提供全球统一的可寻址空间，同时也被认为是最有可能取代HTTP的新一代互联网协议。
+
+- IPFS用基于内容的寻址替代传统的基于域名的寻址，用户不需要关心服务器的位置，不用考虑文件存储的名字和路径。我们将一个文件放到IPFS节点中，将会得到基于其内容计算出的唯一加密哈希值。哈希值直接反映文件的内容，哪怕只修改1比特，哈希值也会完全不同。当IPFS被请求一个文件哈希时，它会使用一个分布式哈希表找到文件所在的节点，取回文件并验证文件数据。
+
+- IPFS是通用目的的基础架构，基本没有存储上的限制。大文件会被切分成小的分块，下载的时候可以从多个服务器同时获取。IPFS的网络是不固定的、细粒度的、分布式的网络，可以很好的适应内容分发网络的要求。这样的设计可以很好的共享各类数据，包括图像、视频流、分布式数据库、整个操作系统、模块链、8英寸软盘的备份，还有静态网站。
+
+- IPFS提供了一个友好的WEB访问接口，用户可通过http\:\/\/ipfs.io\/ipfs\/hash 获取IPFS网络中的内容，也许在不久的将来，IPFS协议将会彻底替代传统的HTTP协议。
+
+### 2.环境配置
+
+#### 2.1 本地安装
+
+1. 在http:\/\/ipfs.io下载安装包，根据操作系统选择下载。本讲为MacOS，下载文件为 go-ipfs\_v0.4.16\_darwin-amd64.tar
+2. 拷贝ipfs可执行程序至PATH路径下
+
+#### 2.2 源码安装
+
+1. github拷贝源码
+2. make build && make install 即可
+
+#### 2.3 初始化ipfs节点并检查安装状态
+
+```
+# 初始化ipfs节点
+ipfs init
+# 根据提示，检查安装状态
+ipfs cat /ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/readme
+```
+
+![image](http://blog.lpc-win32.com/img/2018-09-29/ipfs-01.png)
+
+#### 2.4 启动ipfs守护进程，加入IPFS网络
+
+```
+~> ipfs daemon
+Initializing daemon... 
+Successfully raised file descriptor limit to 2048. 
+Swarm listening on /ip4/127.0.0.1/tcp/4001 
+Swarm listening on /ip4/172.17.0.1/tcp/4001 
+Swarm listening on /ip4/172.22.16.1/tcp/4001 
+Swarm listening on /ip4/192.168.0.116/tcp/4001 
+Swarm listening on /ip4/192.168.122.1/tcp/4001 
+Swarm listening on /ip6/::1/tcp/4001 
+Swarm listening on /p2p-circuit/ipfs/QmQQ5t88W44Je5WgvmgpV1xSZTg1y5UXdYFHcQQ7EayxwR 
+Swarm announcing /ip4/10.103.255.235/tcp/48240 
+Swarm announcing /ip4/127.0.0.1/tcp/4001 
+Swarm announcing /ip4/172.17.0.1/tcp/4001 
+Swarm announcing /ip4/172.22.16.1/tcp/4001 
+Swarm announcing /ip4/192.168.0.116/tcp/4001 
+Swarm announcing /ip4/192.168.122.1/tcp/4001 
+Swarm announcing /ip6/::1/tcp/4001 
+API server listening on /ip4/127.0.0.1/tcp/5001 
+Gateway (readonly) server listening on /ip4/127.0.0.1/tcp/8080 
+Daemon is ready
+```
+
+#### 2.5 在另一环境查看ipfs网络
+
+```
+/ip4/103.214.109.178/tcp/4001/ipfs/QmfZeNauweuRYWNXMjPhB4Tu2CPU6aD5eide9PEhVtHP6A
+/ip4/104.131.131.82/tcp/4001/ipfs/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
+/ip4/104.223.59.174/tcp/4001/ipfs/QmeWdgoZezpdHz1PX8Ly8AeDQahFkBNtHn6qKeNtWP1jB6
+/ip4/104.233.106.156/tcp/4001/ipfs/QmSaLHB9dK7UphxcSWSdySVQyayux2yVMUELnAN8VV96x2
+/ip4/106.38.77.82/tcp/49777/ipfs/QmfT3BCVYjLiVVB197mR1P4uhdR7zsKZsE7HLzCV1qSbHJ
+/ip4/107.172.55.210/tcp/4001/ipfs/QmcYfPreozdQMKyo5omUhvTShCKRjdeiQhS7328J7CLLXe
+```
+
+#### 2.6 从ipfs网络中获取文件
+
+```
+~> ipfs cat /ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg >　cat.jpg
+# 或者直接下载文件
+~> ipfs get /ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg
+```
+
+![image](http://blog.lpc-win32.com/img/2018-09-29/ipfs-02.png)
+
+#### 2.7 ipfs目录说明
+
+![image](http://blog.lpc-win32.com/img/2018-09-29/ipfs-03.png)
+
+- ~\/\.ipfs目录中文件及文件夹作用
+- Block：文件保存的真正位置
+- dataStore：文件元数据保存位置，记录了Block文件的清单
+- keyStore：用于存储本地用户为IPNS创建的Key，即公钥
+- config文件：保存本地节点配置信息
+- dataStore\_spec文件：Json格式的描述文件，保存dataStore文件夹中元数据的描述信息
+- version文件：当前ipfs版本信息
+
+### 3.ipfs工作原理
+
+#### 3.1 ipfs的存储于读取（基础）
+
+文件系统的索引和扇区结构类似，IPFS也有检索的索引，索引结构是DHT（分布式哈希表），数据结构是Merkle DAG（Merkle 有向无环图）
+
+> Merkle 有向无环图特点（ipfs白皮书）
+
+- 内容可寻址：所有内容都是被多重hash校验和来唯一识别的，包括links
+- 无法篡改：所有的内容都用它的校验和来验证。如果数据被篡改或损坏，ipfs会检测到
+- 重复数据删除：重复内容并只存储一次（因为相同文件对应的hash值是完全一致的）
+
+#### 3.2 单文件存储
+
+1. 把单个文件拆分成若干个256KB大小的块（ block，这个就可以理解成扇区 ）
+2. 逐块(block)计算block hash，hashn \= hash ( blockn )
+3. 把所有的block hash拼凑成一个数组，再计算一次hash，便得到了文件最终的hash，hash ( file ) \= hash ( hash1……n )，并将这个 hash（file） 和block hash数组“捆绑”起来，组成一个对象，把这个对象当做一个索引结构
+4. 把block、索引结构全部上传给IPFS节点，文件便同步到了IPFS网络了
+5. 把 Hash（file）打印出来，读的时候用
+6. 小文件（小于 1KB） 的文件，IPFS会把数据内容直接和Hash（索引）放在一起上传给IPFS节点，不会再额外的占用一个block的大小
+7. IPFS计算文件得到的hash，其实和我们平时计算hash的方式不一样，而且最终的结果也不一样
+
+#### 3.3 文件树存储
+
+1. 先把目录下所有的文件同步到IPFS网络中去，为所有的文件hash建立一个别名，这个别名其实就是本地文件名，把hash和别名“捆绑”在一起组建成一个名为 IPFSLink 的对象
+2. 把该目录下所有的 IPFSLink 对象组成一个数组，对该数组计算一个目录hash，并将数组和目录hash拼成一个结构体，同步到IPFS网络
+3. 如果上层还有目录结构，则为目录hash建立一个别名（就是目录名），把目录hash和别名“捆绑”在一起组建成一个 IPFSLink 的对象，重复从步骤2开始执行
+4. 把目录hash打印出来，读取的时候用
+5. 由上可以看出，对于IPFS而言，存储目录和文件其实是一样的处理方式，IPFS甚至根本没有关心节点想要存储的是一个目录还是一个文件
+
+#### 3.4 单文件读取
+
+> IPFS读取文件的方式，就是存储方式的一个逆推过程
+
+1. 根据hash搜索该hash的索引结构，即找到该文件hash 的 block hash数组（这一步由IPFS网络完成，是旷工该干的事情，下面讲述矿工原理）
+2. 此时已经得到了 block 的索引，根据block hash，搜索block所在的节点位置，下载下来
+3. 本地拼装block：根据block hash数组的顺序，把文件拼凑好
+4. block的下载是IPFS的核心，这中间涉及到很多复杂的技术细节，可以通过源码研究，目前没有深入
+
+#### 3.5 文件树读取
+
+> 目录的读取也是目录存储过程的逆推
+
+1. 根据hash搜索该hash的索引结构，找到该目录的 IPFSLink 对象数组，即目录下的子列表
+2. 遍历数组，如果IPFSLink对象是文件，则取出文件的hash下载该文件
+3. 如果IPFSLink对象是目录，取出目录hash，重新从步骤1开始执行
+
+#### 3.6 ipfs对象（底层原理）
+
+IPFS本质上是一个用于检索和共享IPFS对象的P2P系统。一个IPFS对象是一个具有两个字段的数据结构:
+
+- Data—大小小于256 kB的非结构化数据块（blob）
+- Links — 一个Link结构体的数组。其中包含的Link指向其他IPFS对象
+
+Link结构有三个数据字段:
+
+- Name — Link的名字
+- Hash — Link指向的IPFS对象的hash
+- Size — Link指向对象的累计大小，计算Link指向的对象大小，需要计入这个被指对象所指向所有对象的大小（注：除了被指向对象自身的size，如果它里面有link，那么还要把link中的size加进来）
+
+> Size字段主要用于优化P2P网络，因为它不影响逻辑结构的概念表达我们将在这里忽略它
+
+IPFS对象通常采用经Base58编码的散列引用。例如，观察hash为QmarHSr9aSNaPSR6G9KFPbuLV9aEqJfTk1y9B8pdwqK4Rq的IPFS对象，可以使用命令行执行指令（亲自实践一下）：
+
+```
+~> ipfs object get QmarHSr9aSNaPSR6G9KFPbuLV9aEqJfTk1y9B8pdwqK4Rq
+{"Links": 
+    [{
+        "Name":"AnotherName",
+        "Hash":"QmVtYjNij3KeyGmcgg7yVXWskLaBtov3UYL9pgcGK3MCWu",
+        "Size": 18
+    },
+    {
+        "Name":"SomeName",
+        "Hash":"QmbUSy8HCn8J4TMDRRdxCbK2uCCtkQyZtY6XYv3y7kLgDC",
+        "Size": 58
+    }],
+    "Data": "Hello World!"
+}
+```
+
+> 所有的散列都是以“Qm”开头的。这是因为它实际上是一个multihash，前两个字节用于指定哈希函数和哈希长度。在上面的例子中，前两个字节的十六进制是1220，其中12表示这是SHA256哈希函数，20代表哈希函数选择32字节长度计算
+
+数据和命名链接构成的IPFS对象的集合即是Merkle DAG结构。顾名思义，DAG表明了这一种有向无环图，而Merkle说明这是一个密码验证的数据结构，使用加密哈希来寻址内容
+
+![image](http://blog.lpc-win32.com/img/2018-09-29/ipfs-04.png)
+
+#### 3.7 小文件
+
+IPFS对象表示一个小文件(< 256 kB)时，对象结构中的data是该文件内容(还需要在文件数据的开始和结尾处还要分别附加一小段header数据和一个footer数据)，对象中不含链接，即Links数组是空的
+
+> 注意，文件名称不是IPFS对象的一部分，因此两个具有不同名称和相同内容的文件将具有相同的IPFS对象表示，同样具有相同的hash值
+
+```
+~> ipfs add test_dir/hello.txt 
+added QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG test_dir/hello.txt
+```
+
+```
+~> ipfs object get QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG
+{
+    "Links": [],
+    "Data": "\u0008\u0002\u0012\rHelloWorld!\n\u0018\r"
+}
+```
+
+#### 3.8 大文件
+
+大文件(> 256kb)是由一个链接（Link）列表来表示的，列表中每个链接分别指向的是小于256 kB的文件块，于是只需用包含了很小的数据量的对象就能代表一个大文件。指向文件块的链接的name字段为空字符串
+
+```
+~> ipfs add test_dir/bigfile.js 
+added QmR45FmbVVrixReBwJkhEKde2qwHYaQzGxu4ZoDeswuF9w test_dir/bigfile.js
+```
+
+```
+~> ipfs object get QmR45FmbVVrixReBwJkhEKde2qwHYaQzGxu4ZoDeswuF9w
+{
+    "Links": [
+    {
+        "Name": "",
+        "Hash": "QmYSK2JyM3RyDyB52caZCTKFR3HKniEcMnNJYdk8DQ6KKB",
+        "Size": 262158
+    },
+    {
+        "Name": "",
+        "Hash": "QmQeUqdjFmaxuJewStqCLUoKrR9khqb4Edw9TfRQQdfWz3",
+        "Size": 262158
+    },
+    {
+        "Name": "",
+        "Hash": "Qma98bk1hjiRZDTmYmfiUXDj8hXXt7uGA5roU5mfUb3sVG",
+        "Size": 178947
+    }],
+    "Data": "\u0008\u0002\u0018*\u0010 \u0010 \n"
+}
+```
+
+![image](http://blog.lpc-win32.com/img/2018-09-29/ipfs-05.png)
+
+#### 3.9 目录结构
+
+目录由指向表示文件或其他目录的IPFS对象的链接（Link）列表来表示。链接的name字段是文件和目录的名称。例如，请考虑以下目录结构test\_dir目录
+
+```
+~> ls -R test_dir
+ls -R test_dir
+test_dir:
+bigfile.js hello.txt my_dir
+test_dir/my_dir:
+my_file.txt testing.txt
+## 其中的文件hello.txt和my_file.txt的内容同为字符串Hello World!\n。而文件testing.txt的内容为字符串Testing 123\n
+~> ipfs add –r test_dir
+```
+
+将这个目录结构表示为一个IPFS对象图时，它看起来是这样的:
+
+![image](http://blog.lpc-win32.com/img/2018-09-29/ipfs-06.png)
+
+#### 3.10 版本化文件系统
+
+IPFS可以表示Git所使用的数据结构，以支持版本化的文件系统。Git的提交对象（commit objects）在Git手册中被描述。IPFS提交对象的结构在目前没有完全指定，讨论仍在进行中
+
+IPFS提交对象的主要属性是，它包含一个或多个名称为parent0、parent1等链接，这些链接指向先前的提交；另外，还包含一个名字为object的链接(Git中称为树)，指向该提交引用的文件系统结构
+
+我们以前面的文件系统目录结构为例，这里显示了两个提交（commit）:第一个提交是原始结构，在第二个提交中，我们更新了文件my\_file\.txt，内容改成了Another World!而不是原来的Hello World!
+
+> 值得注意的是这里也发生了自动去重，因此第二个提交中的新对象只有主目录、新目录my\_dir(译注：目录下的文件有变化，hash重新计算)和更新后的文件my\_file\.txt
+
+![image](http://blog.lpc-win32.com/img/2018-09-29/ipfs-07.png)
+
