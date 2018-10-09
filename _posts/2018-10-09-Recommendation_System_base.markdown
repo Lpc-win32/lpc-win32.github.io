@@ -3,10 +3,10 @@ layout:     post
 title:      "推荐系统-基础概念概述"
 subtitle:   " \"推荐系统-基础概念概述\""
 date:       2018-10-09 14:46
-header-img: "img/post-bg-ai.png" 
+header-img: "img/post-bg-ai.jpg" 
 tags:
     - ai
-    - recommendation_system
+    - recommendation\_system
 ---
 
 > 在浏览网页时经常会遇到信息过载的问题，这时需要一个工具来帮助你做筛选，它可以分析你的历史兴趣，从庞大的电影库中找到几部符合你兴趣的电影供你选择。这个工具就是推荐系统
