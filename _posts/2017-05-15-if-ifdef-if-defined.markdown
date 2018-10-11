@@ -4,6 +4,10 @@ title:      "#if、#ifdef、#if defined()之间的区别"
 subtitle:   " \"很简单，一看便知....\""
 date:       2017-05-15 10:56
 header-img: "img/post-bg-unix-linux.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - c
     - gcc

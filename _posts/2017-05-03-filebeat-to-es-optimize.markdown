@@ -3,7 +3,11 @@ layout:     post
 title:      "filebeat to elasticsearch针对于filebeat端性能优化--性能提升230%"
 subtitle:   " \"基于配置文件的优化以及代码层面的优化\""
 date:       2017-05-03 14:54
-header-img: "img/post-bg-2015.jpg" 
+header-img: "img/post-bg-2015.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - golang
     - goroutine

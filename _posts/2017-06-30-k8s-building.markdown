@@ -3,7 +3,11 @@ layout:     post
 title:      "kubernetes集群搭建手册--未完待续..."
 subtitle:   " \"手把手教学kubernetes集群搭建\""
 date:       2017-06-30 1:06
-header-img: "img/google-picture.jpg" 
+header-img: "img/google-picture.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - kubernetes
     - etcd

@@ -3,7 +3,11 @@ layout:     post
 title:      "ipfs星际文件系统简介"
 subtitle:   " \"ipfs简介\""
 date:       2018-09-29 14:26
-header-img: "img/post-bg-blockchain.jpg" 
+header-img: "img/post-bg-blockchain.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - ipfs
     - blockchain

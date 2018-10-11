@@ -3,7 +3,11 @@ layout:     post
 title:      "分布式一致性算法-Raft"
 subtitle:   " \"相比于Paxos更易理解的分布式系统一致性算法--Raft\""
 date:       2017-08-08 17：08
-header-img: "img/post-bg-unix-linux.jpg" 
+header-img: "img/post-bg-unix-linux.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - Raft
     - algorithm

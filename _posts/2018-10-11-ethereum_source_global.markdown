@@ -3,7 +3,11 @@ layout:     post
 title:      "以太坊源码分析-以太坊框架解析"
 subtitle:   " \"先了解一下以太坊整体框架\""
 date:       2018-10-11 14:01
-header-img: "img/post-bg-ethereum.jpg" 
+header-img: "img/post-bg-ethereum.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - ethereum
     - blockchain

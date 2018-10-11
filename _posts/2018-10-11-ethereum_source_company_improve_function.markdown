@@ -4,6 +4,10 @@ title:      "以太坊源码分析-以太坊源码的企业需求"
 subtitle:   " \"以企业模块化方式初识以太坊源码的企业需求\""
 date:       2018-10-11 15:11
 header-img: "img/post-bg-ethereum.jpg" 
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - ethereum
     - blockchain

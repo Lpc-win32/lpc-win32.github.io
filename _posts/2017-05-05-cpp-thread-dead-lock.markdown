@@ -4,6 +4,10 @@ title:      "C++程序中如何避免死锁？"
 subtitle:   " \"c++11 dead-lock\""
 date:       2017-05-05 15:05
 header-img: "img/post-bg-unix-linux.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - c++
     - c++11

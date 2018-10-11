@@ -3,7 +3,11 @@ layout:     post
 title:      "Linux多线程服务端编程：第三章 多线程服务器的适用场合与常用编程模型"
 subtitle:   " \"码农生来只知道前进！\""
 date:       2017-03-25 22:09
-header-img: "img/post-bg-unix-linux.jpg" 
+header-img: "img/post-bg-unix-linux.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - c++
     - c++11

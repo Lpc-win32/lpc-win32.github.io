@@ -3,7 +3,11 @@ layout:     post
 title:      "以太坊源码分析-以太坊黄皮书"
 subtitle:   " \"先了解一下以太坊黄皮书\""
 date:       2018-10-11 14:03
-header-img: "img/post-bg-ethereum.jpg" 
+header-img: "img/post-bg-ethereum.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - ethereum
     - blockchain

@@ -4,6 +4,10 @@ title:      "c++ std::mutex"
 subtitle:   " \"c++11 mutex\""
 date:       2017-04-17 17:29
 header-img: "img/post-bg-unix-linux.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - c++
     - c++11

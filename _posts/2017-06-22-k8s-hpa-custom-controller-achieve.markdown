@@ -3,7 +3,11 @@ layout:     post
 title:      "kubernetes集群自定义指标扩容缩容hpa-custom-controller的原理及实现"
 subtitle:   " \"与promethues监控平台等组件交互，实现pod多维度扩容缩容的高可用组件\""
 date:       2017-06-22 11:24
-header-img: "img/google-picture.jpg" 
+header-img: "img/google-picture.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - golang
     - goroutine

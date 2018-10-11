@@ -3,7 +3,11 @@ layout:     post
 title:      "C++11 '=default','=delete'"
 subtitle:   " \"一些关键点的个人领悟....\""
 date:       2017-04-07 14:25
-header-img: "img/post-bg-2015.jpg" 
+header-img: "img/post-bg-2015.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - c++
     - c++11

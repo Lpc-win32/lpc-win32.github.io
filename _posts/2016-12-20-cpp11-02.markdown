@@ -4,6 +4,10 @@ title: 深入理解C++11（笔记）：第二章 保证稳定性与兼容性
 subtitle: ' "稳定性与兼容性."'
 date: '2016-12-19 13:39'
 header-img: img/post-bg-2015.jpg
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
   - c++
 published: true

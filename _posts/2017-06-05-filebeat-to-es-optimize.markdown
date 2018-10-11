@@ -3,7 +3,11 @@ layout:     post
 title:      "filebeat to elasticsearch针对于filebeat端稳定性优化--修复filebeat文件描述符溢出问题"
 subtitle:   " \"filebeate版本迁移至5.3，修复filebeat文件描述符溢出BUG，Make our filebeat stronger!\""
 date:       2017-06-05 17:54
-header-img: "img/post-bg-2015.jpg" 
+header-img: "img/post-bg-2015.jpg"
+author:     "pepperliu"
+header-mask:  0.3
+catalog:      true
+multilingual: true
 tags:
     - golang
     - goroutine
