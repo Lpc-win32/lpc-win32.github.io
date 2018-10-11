@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "以太坊源码分析-go\-ethereum源码目录结构分析"
-subtitle:   " \"初识go\-ethereum\""
+title:      "以太坊源码分析-go-ethereum源码目录结构分析"
+subtitle:   " \"初识go-ethereum\""
 date:       2018-10-11 17:00
 header-img: "img/post-bg-ethereum.jpg" 
 author:     "pepperliu"
@@ -13,7 +13,7 @@ tags:
     - blockchain
 ---
 
-### 下载go\-ethereum源码：
+### 下载go\-ethereum源码
 
 ```
 $ cd  $GOPATH; 
