@@ -1,6 +1,6 @@
 ---
 layout: page
-description: "坚持记录并分享工作、学习、生活中的点点滴滴"
+description: "我干了什么 究竟拿了时间换了什么"
 ---
 
 {% for post in paginator.posts %}
@@ -15,7 +15,11 @@ description: "坚持记录并分享工作、学习、生活中的点点滴滴"
         </h3>
         {% endif %}
         <div class="post-content-preview">
-            {{ post.content | strip_html | truncate:200 }}
+            {% if post.lang == 'en' %}
+                {{ post.content | strip_html | truncate:300 }}
+            {% else %}
+                {{ post.content | strip_html | truncate:200 }}
+            {% endif %}
         </div>
     </a>
     <p class="post-meta">
