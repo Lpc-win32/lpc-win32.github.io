@@ -172,7 +172,7 @@ coinbase：接收挖矿挖来的ETH的地址
 
 如果想查看更多信息可以执行下面的命令，不仅打印了账户信息，还打印出了私钥存储的位置和账户状态等信息
 
-```json
+```shell_session
 > personal.listWallets
 [{
     accounts: [{
@@ -215,7 +215,7 @@ true
 
 看到终端打印了true，说明我们成功建立了ab节点之间的互通
 
-```json
+```shell_session
 > admin.peers
 
 [{
@@ -436,6 +436,7 @@ abi如下：
 
 ```shell_session
 > abi=[{"constant":true,"inputs":[],"name":"value","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function","stateMutability":"view"},{"constant":false,"inputs":[{"name":"v","type":"uint256"}],"name":"set","outputs":[],"payable":false,"type":"function","stateMutability":"nonpayable"},{"constant":true,"inputs":[],"name":"get","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function","stateMutability":"view"},{"inputs":[{"name":"v","type":"uint256"}],"payable":false,"type":"constructor","stateMutability":"nonpayable"}]
+
 [{
     constant: true,
     inputs: [],
@@ -482,8 +483,9 @@ abi如下：
 
 然后再输入：
 
-```json
+```shell_session
 > sample = eth.contract(abi)
+
 {
   abi: [{
       constant: true,
@@ -630,6 +632,7 @@ abi如下：
 
 ```shell_session
 > samplerecept=eth.getTransactionReceipt("0xa04b0c5ec43c4467daef3735f043fa0c58ca32879a11c8debdd4c1c788abf5f1")
+
 {
   blockHash: "0xf59d918cfe2d518a52aa71fefd24c2df0af8843b13d56028616bc3df5a3725b8",
   blockNumber: 9,
