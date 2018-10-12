@@ -16,7 +16,7 @@ tags:
 ### 下载go\-ethereum源码
 
 ```
-$ cd  $GOPATH; 
+$ cd  $GOPAT
 $ mkdir src
 $ cd src  #进入go项目目录，创建src目录, 并进入src目录
 $ git clone https://github.com/ethereum/go-ethereum
