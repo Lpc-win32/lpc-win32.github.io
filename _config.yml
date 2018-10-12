@@ -72,7 +72,7 @@ netease_comment: false
 
 # Google Analytics
 #ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-ga_domain: lpc-win32.com
+ga_domain: blog.lpc-win32.com
 
 
 
