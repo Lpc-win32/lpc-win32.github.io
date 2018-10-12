@@ -5,9 +5,7 @@ subtitle:   " \"初识go-ethereum,在深入学习源码之前,我们先学会怎
 date:       2018-10-12 14:14
 header-img: "img/post-bg-ethereum.jpg" 
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - ethereum
     - blockchain
