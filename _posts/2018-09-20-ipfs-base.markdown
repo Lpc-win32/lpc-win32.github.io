@@ -48,7 +48,7 @@ ipfs cat /ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/readme
 
 #### 2.4 启动ipfs守护进程，加入IPFS网络
 
-```
+``` shell
 ~> ipfs daemon
 Initializing daemon... 
 Successfully raised file descriptor limit to 2048. 
@@ -73,7 +73,7 @@ Daemon is ready
 
 #### 2.5 在另一环境查看ipfs网络
 
-```
+``` shell
 /ip4/103.214.109.178/tcp/4001/ipfs/QmfZeNauweuRYWNXMjPhB4Tu2CPU6aD5eide9PEhVtHP6A
 /ip4/104.131.131.82/tcp/4001/ipfs/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ
 /ip4/104.223.59.174/tcp/4001/ipfs/QmeWdgoZezpdHz1PX8Ly8AeDQahFkBNtHn6qKeNtWP1jB6
