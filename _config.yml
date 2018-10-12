@@ -38,6 +38,8 @@ gems: [jekyll-paginate]
 markdown: kramdown
 kramdown:
   input: GFM                            # use Github Flavored Markdown !important
+  use_coderay: true
+  syntax_highlighter: rouge
 
 # Disqus settings
 #disqus_username: _your_disqus_short_name_
