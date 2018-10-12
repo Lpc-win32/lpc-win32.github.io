@@ -5,9 +5,7 @@ subtitle:   " \"filebeate版本迁移至5.3，修复filebeat文件描述符溢�
 date:       2017-06-05 17:54
 header-img: "img/post-bg-2015.jpg"
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - golang
     - goroutine

@@ -5,9 +5,7 @@ subtitle:   " \"初识go-ethereum\""
 date:       2018-10-11 17:00
 header-img: "img/post-bg-ethereum.jpg" 
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - ethereum
     - blockchain
@@ -15,7 +13,7 @@ tags:
 
 ### 下载go\-ethereum源码
 
-```
+```shell_session
 $ cd  $GOPAT
 $ mkdir src
 $ cd src  #进入go项目目录，创建src目录, 并进入src目录

@@ -5,9 +5,7 @@ subtitle:   " \"与promethues监控平台等组件交互，实现pod多维度扩
 date:       2017-06-22 11:24
 header-img: "img/google-picture.jpg"
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - golang
     - goroutine
@@ -80,7 +78,7 @@ hpa-custom-controller源码地址: [Lpc-win32/hpa-custom-controller](https://git
 
 用户在k8s集群上线一个业务时，会配置一些hpa相关的信息。这些信息我们会存储至etcd中。而collector的作用就在于定期从etcd中拉取配置，汇总并递交给controller处理。etcd存储的内容例子如下:
 
-```
+```yaml
 minreplicas: 2
 maxreplicas: 4
 name: "nginx-test"      # deployment name

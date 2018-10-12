@@ -5,9 +5,7 @@ subtitle:   " \"netcat..网络界的瑞士军刀\""
 date:       2017-04-20 23:28
 header-img: "img/post-bg-unix-linux.jpg"
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - linux
     - cmd

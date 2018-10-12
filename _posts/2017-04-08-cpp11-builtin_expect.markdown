@@ -5,9 +5,7 @@ subtitle:   " \"likely()与unlikely()....\""
 date:       2017-04-08 00:25
 header-img: "img/post-bg-unix-linux.jpg"
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - c++
     - c++11

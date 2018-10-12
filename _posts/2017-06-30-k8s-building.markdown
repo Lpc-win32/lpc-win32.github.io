@@ -5,9 +5,7 @@ subtitle:   " \"手把手教学kubernetes集群搭建\""
 date:       2017-06-30 1:06
 header-img: "img/google-picture.jpg"
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - kubernetes
     - etcd
@@ -42,7 +40,7 @@ master节点需要的组件如下：
 
 etcd进程采用Systemd管理。在/lib/systemd/system路径下创建etcd.service文件，内容如下：
 
-```
+```toml
 [Unit]
 Description=Etcd Server
 After=network.target
@@ -64,7 +62,7 @@ WantedBy=multi-user.target
 
 创建配置文件/etc/k8s/cfg/etcd.conf存放etcd配置文件，内容如下：
 
-```
+```toml
 NAME="--name etcd-test"
 DATA_DIR="--data-dir /var/etcd"
 LISTEN_CLIENT_URLS="--listen-client-urls http://172.16.189.22:2379,http://172.16.189.22:4001,http://127.0.0.1:2379"
@@ -84,7 +82,7 @@ ADVERTISE_CLIENT_URLS="--advertise-client-urls http://172.16.189.22:2379,http://
 
 如果没有什么报错，etcd进程就能正常启动了，登录到其他节点上可以通过curl进行简单的验证一下etcd服务是否正常运行：
 
-```
+```shell_session
 [root@master_189_23 ~]# curl 172.16.189.22:4001/version
 {"etcdserver":"2.2.1","etcdcluster":"2.2.0"}
 # 看到有这样的提示，表明etcd启动成功
@@ -96,7 +94,7 @@ ADVERTISE_CLIENT_URLS="--advertise-client-urls http://172.16.189.22:2379,http://
 
 ##### 1.3.1 自签 CA
 
-```
+```shell_session
 # 创建证书存放目录
 [root@master_189_22 net.d]# mkdir -p /etc/kubernetes/ssl && cd /etc/kubernetes/ssl
 # 创建CA私钥
@@ -114,7 +112,7 @@ ADVERTISE_CLIENT_URLS="--advertise-client-urls http://172.16.189.22:2379,http://
 2. 编辑openssl.cnf配置使其支持 IP 认证
 - [root@master_189_22 net.d]# vi openssl.cnf
 
-```
+```toml
 [req]
 req_extensions = v3_req
 distinguished_name = req_distinguished_name
@@ -136,7 +134,7 @@ IP.2 = 172.16.189.22
 
 3. 开始签署apiserver相关的证书
 
-```
+```shell_session
 # 生成apiserver私钥
 [root@master_189_22 net.d]# openssl genrsa -out apiserver-key.pem 2048
 # 生成签署请求
@@ -149,7 +147,7 @@ IP.2 = 172.16.189.22
 
 配置worker-openssl.cnf
 
-```
+```toml
 [req]
 distinguished_name = req_distinguished_name
 [req_distinguished_name]
@@ -163,7 +161,7 @@ IP.1 = 172.16.189.22
 
 签署node证书
 
-```
+```toml
 # 先声明WORKER_FQDN变量方便引用
 WORKER_FQDN=worker-1          # node 昵称
 # 生成node私钥
@@ -176,7 +174,7 @@ openssl x509 -req -in ${WORKER_FQDN}-worker.csr -CA ca.pem -CAkey ca-key.pem -CA
 
 5. worker-kubeconfig配置文件
 
-```
+```yaml
 apiVersion: v1
 kind: Config
 clusters:
@@ -212,7 +210,7 @@ kubelet主要功能有：
 
 将kubelet组件交由Systemd管理，在/lib/systemd/system新建service文件：kubelet.service 内容如下：
 
-```
+```toml
 [root@master_189_22 system]# vi kubelet.service 
 [Unit]
 Description=Kubernetes Kubelet
@@ -261,7 +259,7 @@ API Server负责和etcd交互（其他组件不会直接操作etcd，只有API S
 
 kube-apiserver组件以容器的方式运行于k8s集群中的master上，因此需要将其配置文件至于manifests路径下，manifests在kubelet中配置，在上文中有介绍。配置内容如下所示：
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -330,7 +328,7 @@ spec:
 
 ##### 1.5.3 kube-apiserver验证
 
-```
+```shell_session
 [root@master_189_22 manifests]# docker ps 
 CONTAINER ID        IMAGE                                                      COMMAND                  CREATED             STATUS              PORTS               NAMES
 abcf5b450229        reg.local:5000/google_containers/hyperkube-amd64:vs1.5.2   "/bin/sh -c '/hyperku"   2 hours ago         Up 2 hours                              k8s_kube-apiserver.ccbfa766_kube-apiserver-172.16.189.22_default_a1b53b0981653b1ebff3a63c40d35ff5_5613d2ba
@@ -339,7 +337,7 @@ abcf5b450229        reg.local:5000/google_containers/hyperkube-amd64:vs1.5.2   "
 
 使用kubectl命令验证apiserver是否启动并服务
 
-```
+```shell_session
 [root@master_189_22 manifests]# kubectl get pod
 No resources found.
 # 出现这种情况，说明kube-apiserver已成功运行，并提供了http服务
@@ -355,7 +353,7 @@ controller manager主要的工作就是和apiserver通信，获取集群的特�
 
 将kube-controller-manager.yaml文件放入manifests中启动
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -413,7 +411,7 @@ spec:
 
 ##### 1.7.2 kube-scheduler配置文件
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -458,7 +456,7 @@ spec:
 
 经过上述步骤，master节点部署完毕，通过kubectl工具验证
 
-```
+```shell_session
 [root@master_189_22 manifests]# kubectl get pod -o wide
 NAME                           READY     STATUS    RESTARTS   AGE       IP              NODE
 kube-apiserver-172.16.189.22   1/1       Running   0          1h        172.16.189.22   172.16.189.22
@@ -491,7 +489,7 @@ minion需要的组件如下：
 
 同master节点一样，kubelet组件运行在宿主机上，kubelet服务通过Systemd管理。kubelet.service文件置于/lib/systemd/system路径下，配置内容如下：
 
-```
+```toml
 [Unit]
 Description=Kubernetes Kubelet
 After=docker.service
@@ -517,7 +515,7 @@ kube-proxy网络代理运行在每个minion节点上。它的功能反映了定�
 
 ##### 2.3.2 kube-proxy配置
 
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -555,7 +553,7 @@ spec:
 
 将kube-proxy.yaml置于/etc/kubernetes/manifests路径下，kubelet将为我们启动kube-proxy组件
 
-```
+```shell_session
 [root@master_189_29 kubernetes]# docker ps
 CONTAINER ID        IMAGE                                                     COMMAND                  CREATED             STATUS              PORTS               NAMES
 230031a56556        reg.local:5000/google_containers/hyperkube-amd64:v1.5.2   "/bin/sh -c '/hyperku"   3 seconds ago       Up 2 seconds                            k8s_kube-proxy.fc56beed_kube-proxy-172.16.189.30_kube-system_f36d6665bd44281c7d65da89cd8c62ce_2656a4b1
@@ -568,7 +566,7 @@ CONTAINER ID        IMAGE                                                     CO
 
 登录到master(172.16.189.22)节点上查看集群node：
 
-```
+```shell_session
 [root@master_189_22 manifests]# kubectl get node
 NAME            STATUS    AGE
 172.16.189.22   Ready     2h
@@ -612,7 +610,7 @@ local_address_group laddr_g1 {
 
 1. 拷贝worker证书
 
-```
+```shell_session
 [root@master_189_198 log]# ll /etc/kubernetes/ssl/
 total 16
 -rw-r--r-- 1 root root 1090 Jun 29 14:13 ca.pem
@@ -622,7 +620,7 @@ total 16
 
 2. 启动keepalived-vip
  
-```
+```shell_session
 kube-keepalived-vip --services-configmap=default/vip-configmap --server=https://172.16.189.22 \
                             --use-kubernetes-cluster-service=false --use-local-addresses=172.16.189.201-230 \
                             --use-service-port=false --use-link-address=172.16.189.65 \
@@ -648,7 +646,7 @@ Quagga能够同时支持RIPv1、RIPv2、RIPng、OSPFv2、OSPFv3、BGP-4和 BGP-4
 
 quagga需要以quagga用户启动，且需要/var/run/quagga、/data/log/quagga两个路径的支持。前者用用户存储进程运行时PID，后者用于存放日志文件。执行步骤如下：
 
-```
+```shell_session
 [root@master_189_198 quagga]# useradd quagga
 [root@master_189_198 quagga]# mkdir /var/run/quagga
 [root@master_189_198 quagga]# chown quagga /var/run/quagga
@@ -658,7 +656,7 @@ quagga需要以quagga用户启动，且需要/var/run/quagga、/data/log/quagga�
 
 ##### 3.3.3 配置ospf路由协议
 
-```
+```shell_session
 [root@master_189_198 quagga]# cat /data/quagga/etc/ospfd.conf 
 !
 ! Zebra configuration saved from vty
@@ -694,7 +692,7 @@ line vty
 
 ##### 3.3.4 启动ospfd
 
-```
+```shell_session
 [root@master_189_198 quagga]# /data/quagga/sbin/ospfd -A 127.0.0.1 -f /data/quagga/etc/ospfd.conf -d
 ```
 
@@ -702,7 +700,7 @@ line vty
 
 1. 登录到k8s集群master节点，创建configMap
 
-```
+```yaml
 apiVersion: v1
 data:
 kind: ConfigMap
@@ -717,7 +715,7 @@ metadata:
 2. 修改现有service为nodePort模式(use-service-port=false)
 3. 增加lvs转发规则
 
-```
+```shell_session
 [root@master_189_22 ~]# kubectl edit configmap vip-configmap
 ------------------------------------
 apiVersion: v1
@@ -736,7 +734,7 @@ metadata:
 
 4. 登录lvs机器查看
 
-```
+```shell_session
 [root@master_189_198 quagga]# ipvsadm -Ln
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port Scheduler Flags
@@ -746,7 +744,7 @@ TCP  172.16.189.130:30176 wlc
 
 5. 查看keepalived.conf是否新增转发规则
 
-```
+```shell_session
 [root@master_189_198 quagga]# cat /etc/keepalived/keepalived.conf 
 
 

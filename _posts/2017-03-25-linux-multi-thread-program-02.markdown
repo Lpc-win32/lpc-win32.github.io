@@ -5,9 +5,7 @@ subtitle:   " \"码农生来只知道前进！\""
 date:       2017-03-25 11:27
 header-img: "img/post-bg-unix-linux.jpg"
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - c++
     - c++11

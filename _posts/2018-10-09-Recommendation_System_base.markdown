@@ -5,9 +5,7 @@ subtitle:   " \"推荐系统-基础概念概述\""
 date:       2018-10-09 14:46
 header-img: "img/post-bg-ai.jpg" 
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - ai
     - recommendation\_system

@@ -5,9 +5,7 @@ subtitle:   " \"First step.\""
 date:       2016-12-29 16:49
 header-img: "img/post-bg-2015.jpg"
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - c++
 ---

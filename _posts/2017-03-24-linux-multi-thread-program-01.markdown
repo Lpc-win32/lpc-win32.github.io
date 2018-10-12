@@ -4,10 +4,7 @@ title:      "Linux多线程服务端编程：第一章 线程安全的对象生�
 subtitle:   " \"前车之鉴，后车之师。谨遵大牛教诲\""
 date:       2017-03-24 17:13
 header-img: "img/post-bg-unix-linux.jpg"
-author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - c++
     - c++11

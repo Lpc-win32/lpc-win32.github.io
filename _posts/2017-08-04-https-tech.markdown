@@ -5,9 +5,7 @@ subtitle:   " \"提高http安全性，发展趋势\""
 date:       2017-08-04 10:51
 header-img: "img/post-bg-unix-linux.jpg"
 author:     "pepperliu"
-header-mask:  0.3
 catalog:      true
-multilingual: true
 tags:
     - https
     - SSL/TLS

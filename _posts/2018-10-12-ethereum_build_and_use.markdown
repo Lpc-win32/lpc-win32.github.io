@@ -19,7 +19,7 @@ tags:
 
 创建两个区块链目录user\_a与user\_b，并在路径下加入创世区块json文件，内容如下
 
-```
+```json
 {
     "config":   {
         "chainId":  15,
@@ -41,7 +41,7 @@ tags:
 
 分别进入刚才创建的genesis\.json配置文件目录下，初始化创世区块。下面执行以下初始化操作用，涉及到操作参数为init
 
-```
+```shell_session
 user_a$ ~/go/src/github.com/ethereum/go-ethereum/build/bin/geth --datadir ./data-init1/ init genesis.json
 ### 看到下面的输出就代表我们init成功了
 INFO [10-12|10:51:43.849] Maximum peer count                       ETH=25 LES=0 total=25
@@ -72,7 +72,7 @@ INFO [10-12|10:52:51.394] Successfully wrote genesis state         database=ligh
 
 打开两个窗口启动两个节点，这里有一点需要注意的是，虽然是两个节点，但他们的启动都是geth，只不过datadir目录不同而已。
 
-```
+```shell_session
 我们先启动第一个节点，命令如下
 user_a$ ~/go/src/github.com/ethereum/go-ethereum/build/bin/geth --datadir ./data-init1/ --networkid 88 --nodiscover console
 
@@ -107,7 +107,7 @@ instance: Geth/v1.8.16-unstable-1a16cc71/darwin-amd64/go1.11
 
 下面在另一个shell中启动另一个节点，换一个端口使用30306
 
-```
+```shell_session
 user_b$ ~/go/src/github.com/ethereum/go-ethereum/build/bin/geth --datadir ./data-init2/ --port 30306 --networkid 88 --nodiscover console
 
 INFO [10-12|11:21:10.711] Maximum peer count                       ETH=25 LES=0 total=25
@@ -138,7 +138,7 @@ coinbase：接收挖矿挖来的ETH的地址
 
 现在创建一个密码为123456账户，操作如下：
 
-```
+```shell_session
 > personal.listAccounts
 []
 > personal.newAccount("123456")
@@ -149,7 +149,7 @@ coinbase：接收挖矿挖来的ETH的地址
 
 同样我们在另一个节点也创建一个密码为123456的账户
 
-```
+```shell_session
 > personal.listAccounts
 []
 > personal.newAccount("123456")
@@ -165,14 +165,14 @@ coinbase：接收挖矿挖来的ETH的地址
 
 我们也可以通过下面的命令查看coinbase账户
 
-```
+```shell_session
 > eth.coinbase
 "0x85bd26dccaa0a567342eec3dbd69effec67cd2bf"
 ```
 
 如果想查看更多信息可以执行下面的命令，不仅打印了账户信息，还打印出了私钥存储的位置和账户状态等信息
 
-```
+```json
 > personal.listWallets
 [{
     accounts: [{
@@ -188,7 +188,7 @@ coinbase：接收挖矿挖来的ETH的地址
 
 下面我们把两个节点连起来。首先查看一下peers情况
 
-```
+```shell_session
 > admin.peers
 []
 ```
@@ -199,7 +199,7 @@ coinbase：接收挖矿挖来的ETH的地址
 
 首先我们在b节点执行下面的命令，查询b节点的enode值
 
-```
+```shell_session
 ### b node
 > admin.nodeInfo.enode
 "enode://84218da5fc039dd28b9cef9cf2e7ea09a84bd8a395c259a06aba5226239c70a40b684fabd548f619980d29f4397ac669d88462a64eadadf086c4926ab0673797@[::]:30306?discport=0"
@@ -207,7 +207,7 @@ coinbase：接收挖矿挖来的ETH的地址
 
 下面我们在a节点连接b节点
 
-```
+```shell_session
 ### a node
 > admin.addPeer("enode://84218da5fc039dd28b9cef9cf2e7ea09a84bd8a395c259a06aba5226239c70a40b684fabd548f619980d29f4397ac669d88462a64eadadf086c4926ab0673797@[::]:30306?discport=0")
 true
@@ -215,7 +215,7 @@ true
 
 看到终端打印了true，说明我们成功建立了ab节点之间的互通
 
-```
+```json
 > admin.peers
 
 [{
@@ -245,7 +245,7 @@ b节点也可以看到类似的peers信息
 
 执行查看余额命令：
 
-```
+```shell_session
 > eth.getBalance(eth.coinbase)
 0
 ```
@@ -256,7 +256,7 @@ b节点也可以看到类似的peers信息
 
 我们在a节点挖矿，b节点先不管
 
-```
+```shell_session
 > miner.start()
 
 INFO [10-12|12:11:13.951] Updated mining threads                   threads=4
@@ -287,7 +287,7 @@ INFO [10-12|12:11:31.842] Successfully sealed new block            number=5 seal
 
 现在我们来看看钱包里的钱
 
-```
+```shell_session
 > eth.getBalance(eth.coinbase)
 30000000000000000000
 ```
@@ -296,7 +296,7 @@ INFO [10-12|12:11:31.842] Successfully sealed new block            number=5 seal
 
 现在我们从节点a的coinbase账户转账一笔交易给节点b的coinbase账户。在转账交易前我们需要unlock两个节点上的coinbase账户，解锁的密码就是之前创建account的密码123456
 
-```
+```shell_session
 > personal.unlockAccount(eth.coinbase)
 Unlock account 0x85bd26dccaa0a567342eec3dbd69effec67cd2bf
 Passphrase: 
@@ -305,7 +305,7 @@ true
 
 在节点a上执行转账操作
 
-```
+```shell_session
 > eth.sendTransaction({from: eth.coinbase, to: '0x39bd93de97ab89e18ea0cd86939705577959fadb', value: 1000000})
 INFO [10-12|13:16:13.833] Setting new local account                address=0x85BD26DccAA0a567342EEC3dBd69Effec67cD2bF
 INFO [10-12|13:16:13.834] Submitted transaction                    fullhash=0x6350ee52e4b54727ab8992acf4cf3b2647a041de5b50abc5f237368f72916831 recipient=0x39bd93dE97aB89E18Ea0cD86939705577959fAdb
@@ -314,7 +314,7 @@ INFO [10-12|13:16:13.834] Submitted transaction                    fullhash=0x63
 
 现在我们来看看b节点上是否收到转账交易
 
-```
+```shell_session
 > eth.getBalance(eth.coinbase)
 0
 ```
@@ -322,7 +322,7 @@ INFO [10-12|13:16:13.834] Submitted transaction                    fullhash=0x63
 我们发现b的coinbase账户余额依然是0，为什么呢？  
 因为我们虽然发起了交易，但并没有旷工挖矿打包交易。再次执行miner.start()。再次查询b节点coinbase账户余额
 
-```
+```shell_session
 > eth.getBalance(eth.coinbase)
 1000000
 ```
@@ -331,13 +331,13 @@ INFO [10-12|13:16:13.834] Submitted transaction                    fullhash=0x63
 
 ### 8. 解锁
 
-```
+```shell_session
 > personal.unlockAccount(eth.accounts[0])
 ```
 
 ### 9. 交易
 
-```
+```shell_session
 > eth.sendTransaction({from: eth.coinbase, to: '0x39bd93de97ab89e18ea0cd86939705577959fadb', value: 1000000})
 ```
 
@@ -367,7 +367,7 @@ uint public value;
 
 abi如下：
 
-```
+```json
 [
 {
     "constant": true,
@@ -428,13 +428,13 @@ abi如下：
 
 对这段数据进行json数据压缩
 
-```
+```shell_session
 [{"constant":true,"inputs":[],"name":"value","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function","stateMutability":"view"},{"constant":false,"inputs":[{"name":"v","type":"uint256"}],"name":"set","outputs":[],"payable":false,"type":"function","stateMutability":"nonpayable"},{"constant":true,"inputs":[],"name":"get","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function","stateMutability":"view"},{"inputs":[{"name":"v","type":"uint256"}],"payable":false,"type":"constructor","stateMutability":"nonpayable"}]
 ```
 
 在第一个节点输入：
 
-```
+```shell_session
 > abi=[{"constant":true,"inputs":[],"name":"value","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function","stateMutability":"view"},{"constant":false,"inputs":[{"name":"v","type":"uint256"}],"name":"set","outputs":[],"payable":false,"type":"function","stateMutability":"nonpayable"},{"constant":true,"inputs":[],"name":"get","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function","stateMutability":"view"},{"inputs":[{"name":"v","type":"uint256"}],"payable":false,"type":"constructor","stateMutability":"nonpayable"}]
 [{
     constant: true,
@@ -482,7 +482,7 @@ abi如下：
 
 然后再输入：
 
-```
+```json
 > sample = eth.contract(abi)
 {
   abi: [{
@@ -581,13 +581,13 @@ abi如下：
 
 然后输入合约二进制代码：
 
-```
+```shell_session
 > SampleHEX="0x6060604052341561000c57fe5b60405160208061013a833981016040528080519060200190919050505b806000819055505b505b60f9806100416000396000f30060606040526000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680633fa4f24514604e57806360fe47b11460715780636d4ce63c14608e575bfe5b3415605557fe5b605b60b1565b6040518082815260200191505060405180910390f35b3415607857fe5b608c600480803590602001909190505060b7565b005b3415609557fe5b609b60c2565b6040518082815260200191505060405180910390f35b60005481565b806000819055505b50565b600060005490505b905600a165627a7a723058205628425e21eefb62faf95e98fbde766001427f1fc9a6ad9856c3ed2ae336a5430029"
 ```
 
 把合约代码部署上链条
 
-```
+```shell_session
 > thesample=sample.new(1, {from:eth.coinbase, data:SampleHEX, gas:3000000})
 
 {
@@ -628,7 +628,7 @@ abi如下：
 
 挖一会儿矿，看看交易细节
 
-```
+```shell_session
 > samplerecept=eth.getTransactionReceipt("0xa04b0c5ec43c4467daef3735f043fa0c58ca32879a11c8debdd4c1c788abf5f1")
 {
   blockHash: "0xf59d918cfe2d518a52aa71fefd24c2df0af8843b13d56028616bc3df5a3725b8",
@@ -648,7 +648,7 @@ abi如下：
 
 看看合约命名：
 
-```
+```shell_session
 > samplecontract=sample.at("0xfd0a74a25a25eb8a804a81b53d1b7d016f7b03e6")
 
 {
@@ -693,7 +693,7 @@ abi如下：
 
 调用合约接口
 
-```
+```shell_session
 > samplecontract.get.call()
 1
 > samplecontract.set.sendTransaction(10, {from:eth.coinbase, gas:3000000})
@@ -702,7 +702,7 @@ abi如下：
 
 执行挖矿，打包这组交易。再来看看我们是否set成功
 
-```
+```shell_session
 > samplecontract.get.call()
 10
 ```
