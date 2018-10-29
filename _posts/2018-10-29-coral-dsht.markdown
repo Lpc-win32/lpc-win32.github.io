@@ -26,7 +26,7 @@ CDN的基本思想是在网络部署一些节点服务器，并且建立一套�
 
 Coral DSHT则是Coral CDN最核心的一个部件。
 
-[Kademlia](http://blog.lpc-win32.com/2018/10/12/kademlia-dht/)，使用的是XOR距离，即信息永远是存储在XOR距离最近的节点中。而这样并没有考虑实际网络的情况，例如节点之间的延时，数据的位置。这样会浪费大量网络带宽和存储空间。Coral解决了这个问题，不同于经典的DHT方式，coral首先对所有的节点评估连接情况，然后根据循环时间（Round\-Trip Time）划分为几个等级
+[Kademlia](http://blog.lpc-win32.com/2018/10/25/kademlia-dht/)，使用的是XOR距离，即信息永远是存储在XOR距离最近的节点中。而这样并没有考虑实际网络的情况，例如节点之间的延时，数据的位置。这样会浪费大量网络带宽和存储空间。Coral解决了这个问题，不同于经典的DHT方式，coral首先对所有的节点评估连接情况，然后根据循环时间（Round\-Trip Time）划分为几个等级
 
 Coral DSHT适用于软状态的键值对检索，也就是同一个Key可能会保存多个Value。这种机制能把给定的Key映射到网络中的Coral服务器地址。
 
@@ -42,7 +42,7 @@ Coral DSHT适用于软状态的键值对检索，也就是同一个Key可能会�
 
 ### 3. 基于键值对的路由层
 
-Coral的键值对与Kademlia一样，都是SHA\-1哈希计算出来的，有160bit。每个节点的ID是由其IP地址，通过SHA\-1运算得到。节点的远近计算方法和路由方法与[Kademlia](http://blog.lpc-win32.com/2018/10/12/kademlia-dht/)是一致的
+Coral的键值对与Kademlia一样，都是SHA\-1哈希计算出来的，有160bit。每个节点的ID是由其IP地址，通过SHA\-1运算得到。节点的远近计算方法和路由方法与[Kademlia](http://blog.lpc-win32.com/2018/10/25/kademlia-dht/)是一致的
 
 ### 4. Sloppy存储
 
