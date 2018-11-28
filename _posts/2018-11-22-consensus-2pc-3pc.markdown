@@ -8,7 +8,7 @@ author:     "pepperliu"
 catalog:      true
 tags:
     - 分布式
-    - consistent
+    - consensus
     - 2PC
     - 3PC
 ---

@@ -8,7 +8,7 @@ author:     "pepperliu"
 catalog:      true
 tags:
     - 分布式
-    - consistent
+    - consensus
 ---
 
 > 本文从区块链角度看共识算法
