@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "【转载】深入剖析mmap - 从三个关键问题说起"
-subtitle:   " \"Rocksdb and badger leveled compaction\""
+subtitle:   " \"mmap\""
 date:       2019-06-16 15:47
 header-img: "img/post-bg-unix-linux.jpg"
 author:     "pepperliu"
